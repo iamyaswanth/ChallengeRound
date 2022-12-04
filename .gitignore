@@ -2,5 +2,6 @@
 .DS_Store
 */modules/
 */.terraform/
+*.tfstate*
 challenge_1/.terraform/
 challenge_1/.terraform/providers/registry.terraform.io/hashicorp/azurerm/3.33.0/darwin_arm64/terraform-provider-azurerm_v3.33.0_x5
