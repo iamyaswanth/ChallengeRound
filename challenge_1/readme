@@ -10,8 +10,6 @@ Each subnet hosts 2 VMs using a scale set. A dedicated subnet is created for app
 which hosts the application gateway that points to the web backend pool.For the sake of 
 simplicity there's no custom data.
 
-
-
 ### Terraform commands to execute
 
 Terraform Initialize
