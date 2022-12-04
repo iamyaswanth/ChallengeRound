@@ -1,7 +1,7 @@
 **Terraform commands to execute**
 
 # Terraform Initialize
-terraform init
+```terraform init```
 
 # Terraform Validate
 terraform validate
