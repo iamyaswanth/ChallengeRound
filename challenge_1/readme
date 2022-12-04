@@ -1,1 +1,13 @@
+Terraform commands to execute
+
 # Terraform Initialize
+terraform init
+
+# Terraform Validate
+terraform validate
+
+# Terraform Plan
+terraform plan
+
+# Terraform Apply
+terraform apply -auto-approve
