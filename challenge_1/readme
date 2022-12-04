@@ -1,4 +1,4 @@
-_Terraform commands to execute_
+## Terraform commands to execute
 
 # Terraform Initialize
 terraform init
