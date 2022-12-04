@@ -7,23 +7,77 @@ locals{
     azurerm_subnets = {
         for subnet in azurerm_subnet.subnet :
             subnet.name => subnet.id
-        }
-
-    azurerm_subnets_list = flatten([keys(local.azurerm_subnets),keys(local.azurerm_subnets)])
-
-    azurerm_subnets_ids_list = flatten([values(local.azurerm_subnets),values(local.azurerm_subnets)])
+    }
 
     azurerm_address_prefixes = {
         for subnet in azurerm_subnet.subnet :
             subnet.name => subnet.address_prefixes[0]
+    }
+
+    nsg_rules = {
+            Allow_HTTP_web  = {
+            name                       = "Allow_HTTP"
+            priority                   = 100
+            direction                  = "Inbound"
+            access                     = "Allow"
+            protocol                   = "Tcp"
+            source_port_range          = "*"
+            destination_port_range     = "80"
+            source_address_prefix      = "*"
+            destination_address_prefix = "*"
+            network_security_group_name = "web-nsg"
         }
 
-    interfaces_list = [for index, interface in azurerm_network_interface.app_interface :  azurerm_network_interface.app_interface[index].id ]
+    Allow_HTTP_app =  {
+            name                       = "Allow_HTTP"
+            priority                   = 101
+            direction                  = "Inbound"
+            access                     = "Allow"
+            protocol                   = "Tcp"
+            source_port_range          = "*"
+            destination_port_range     = "80"
+            source_address_prefix      = local.azurerm_address_prefixes["web"]
+            destination_address_prefix = local.azurerm_address_prefixes["app"]
+            network_security_group_name = "app-nsg"
+        }
 
-    interfaces = flatten([local.interfaces_list, local.interfaces_list])
+    Allow_data_app  = {
+            name                       = "Allow_data"
+            priority                   = 102
+            direction                  = "Outbound"
+            access                     = "Allow"
+            protocol                   = "Tcp"
+            source_port_range          = "*"
+            destination_port_range     = "3306"
+            source_address_prefix      = local.azurerm_address_prefixes["app"]
+            destination_address_prefix = local.azurerm_address_prefixes["data"]
+            network_security_group_name = "app-nsg"
+        }
 
-    avails_sets_list = tolist([ for avail_set in azurerm_availability_set.avail_set : avail_set.id ])
-
-    avails_sets = flatten([ local.avails_sets_list, local.avails_sets_list])
+    Allow_HTTP_data = {
+            name                       = "Allow_HTTP"
+            priority                   = 103
+            direction                  = "Inbound"
+            access                     = "Allow"
+            protocol                   = "Tcp"
+            source_port_range          = "*"
+            destination_port_range     = "3306"
+            source_address_prefix      = local.azurerm_address_prefixes["app"]
+            destination_address_prefix = local.azurerm_address_prefixes["data"]
+            network_security_group_name = "data-nsg"
+        }
+    Deny_All_data  = {
+            name                       = "Deny_All"
+            priority                   = 104
+            direction                  = "Outbound"
+            access                     = "Deny"
+            protocol                   = "*"
+            source_port_range          = "*"
+            destination_port_range     = "*"
+            source_address_prefix      = "*"
+            destination_address_prefix = "*"
+            network_security_group_name = "data-nsg"
+        }
+    }
 
 }

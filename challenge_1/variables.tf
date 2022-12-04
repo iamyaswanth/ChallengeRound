@@ -10,9 +10,9 @@ variable "address_space" {}
 variable "subnets" {
     type = map
     default = {
-        "sn_web"  = "10.0.1.0/24"
-        "sn_app"  = "10.0.2.0/24"
-        "sn_data" = "10.0.3.0/24"
+        "web"  = "10.0.1.0/24"
+        "app"  = "10.0.2.0/24"
+        "data" = "10.0.3.0/24"
     }
   
 } 
@@ -24,14 +24,14 @@ variable "tags" {
     type = map
 }
 
-# variable "pub_ip_name" {}
+variable "pub_ip_name" {}
 
-# variable "gw_cidr" {
+variable "gw_cidr" {
 
-#   default = ["10.0.4.0/24"]
+  default = ["10.0.4.0/24"]
   
-# }
+}
 
-# variable "gw_subnet_name" {
-#   default = "gwsubnet"
-# }
+variable "gw_subnet_name" {
+  default = "gwsubnet"
+}
